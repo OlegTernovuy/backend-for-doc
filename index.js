@@ -46,5 +46,5 @@ app.post('/auth/registration',[
 app.post('/auth/login',AuthController.login)
 
 
-app.listen(process.env.PORT || 5005,() => {
+app.listen(PORT,() => {
 }) 
