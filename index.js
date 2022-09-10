@@ -36,6 +36,8 @@ app.get('/patients', PatientsController.getPatients)
 
 app.post('/patients',PatientsController.addPatient)
 
+app.delete('/patients/:id', PatientsController.removePatient)
+
 
 app.post('/auth/registration',[
 	check("username","Логін має бути не менше 3 символів").isLength({min:3,max:20}),

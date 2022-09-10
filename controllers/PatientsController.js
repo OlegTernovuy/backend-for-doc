@@ -39,4 +39,27 @@ const addPatient = async (req,res) => {
 	}
 }
 
-module.exports = {getPatients,addPatient}
+const removePatient = async (req,res) => {
+	try{
+		const id = req.params.id
+		if(id){
+			await client.connect()
+			client.db('doctor').collection('patients').deleteOne({_id: new ObjectId(id)},(err,result) => {
+				if(result.acknowledged){
+					res.status(200).json({success:true})
+					client.close()
+				}else{
+					res.status(400).json({success:false})
+					client.close()
+				}
+			})
+			
+		}
+
+	}catch(err){
+		console.log(err)
+		res.status(400).json({success:false})
+	}
+}
+
+module.exports = {getPatients, addPatient, removePatient}
