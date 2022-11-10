@@ -15,7 +15,6 @@ const app = express()
 app.use(cors())//Відправляти запити на сервер з різних ip адрес
 app.use(express.json())//з react дані приходять у форматі json
 
-
 //routes
 app.get('/vaccines',VaccinesController.getVaccines)
 
