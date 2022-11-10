@@ -22,13 +22,23 @@ const getPatients = async (req,res) => {
 const addPatient = async (req,res) => {
 	try{
 		if(req.body.name && req.body.phone){
-			const newPatient = {_id: new ObjectId(),...req.body}
-			console.log(newPatient)
 			await client.connect()
+
+			const {time, date} = req.body
+
+			const candidate = await client.db('doctor').collection('patients').findOne({time})
+			const candidate2 = await client.db('doctor').collection('patients').findOne({date})
+
+			if(candidate && candidate2){
+				client.close()
+				return res.status(400).json({message:"Оберіть інший час! ",success:false})
+			}
+
+			const newPatient = {_id: new ObjectId(),...req.body}
 			
 			const isSuccess = await client.db('doctor').collection('patients').insertOne(newPatient)
 			if(isSuccess.acknowledged){
-				res.status(200).json({success:true})
+				res.status(200).json({message:"Ви успішно записалися на прийом! ", success:true})
 			}
 			client.close()
 		}

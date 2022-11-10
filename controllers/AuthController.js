@@ -10,8 +10,9 @@ const registration = async (req,res) => {
 	try{
 		const errors = validationResult(req)
 		if(!errors.isEmpty()){
-			return res.status(200).json({message:'Помилка при реєстрації',errors})
+			return res.status(400).json({message:'Логін та пароль повинен бути не менше 4 символів',errors})
 		}
+
 		if(req.body.username && req.body.password){
 			await client.connect()
 			const {username,password} = req.body
@@ -40,12 +41,12 @@ const login = async (req,res) => {
 		const user = await client.db('doctor').collection('users').findOne({username})
 		if(!user){
 			client.close()
-			return res.status(400).json({success:false,message:"Неправильний логін або пароль"})
+			return res.status(400).json({success:false,message:"Неправильний логін"})
 		}
 		const isValidPasword = bcrypt.compareSync(password,user.password)
 		if(!isValidPasword){
 			client.close()
-			return res.status(400).json({success:false,message:"Неправильний логін або пароль"})
+			return res.status(400).json({success:false,message:"Неправильний пароль"})
 		}
 
 		client.close()

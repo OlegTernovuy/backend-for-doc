@@ -11,9 +11,12 @@ const PORT = process.env.PORT || 5005
 
 const app = express()
 
-app.use(cors())
-app.use(express.json())
+//MiddleWare
+app.use(cors())//Відправляти запити на сервер з різних ip адрес
+app.use(express.json())//з react дані приходять у форматі json
 
+
+//routes
 app.get('/vaccines',VaccinesController.getVaccines)
 
 app.post('/vaccines',VaccinesController.addVaccine)
@@ -40,7 +43,7 @@ app.delete('/patients/:id', PatientsController.removePatient)
 
 
 app.post('/auth/registration',[
-	check("username","Логін має бути не менше 3 символів").isLength({min:3,max:20}),
+	check("username","Логін має бути не менше 4 символів").isLength({min:4,max:20}),
 	check("password","Пароль має бути не менше 4 символів").isLength({min:4,max:20})
 ]
 , AuthController.registration)
